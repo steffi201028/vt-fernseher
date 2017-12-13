@@ -1,10 +1,7 @@
-
-
 public class Fernseher extends Subject { //konkretes subject, Objekt
 
 	public Fernseher() {
-		state =false;
-	    
+		state =false;   
 	}
     private boolean state; 
 

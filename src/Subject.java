@@ -14,7 +14,7 @@ public abstract class Subject {
 		observerList.remove(newObserver); 
 	} 
 
-	protected void notifyObservers(int state){ 
+	protected void notifyObservers(boolean state){ 
 		for (Observer observer : observerList) { 
 			observer.update(null, state); 
 		} 
