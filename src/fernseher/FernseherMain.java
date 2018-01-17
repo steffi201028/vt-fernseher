@@ -4,6 +4,7 @@ package fernseher;
 import java.io.File;
 import java.io.IOException;
 import java.net.MalformedURLException;
+import java.net.URL;
 import java.rmi.Naming;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
@@ -32,7 +33,7 @@ public class FernseherMain extends UnicastRemoteObject implements IFernseherRemo
 	}
 
 	public static void main(String[] args) throws IOException, RemoteException, MalformedURLException{
-		
+
 		if(args.length == 3){
 			try {
 				String ip = args[0];
@@ -40,23 +41,23 @@ public class FernseherMain extends UnicastRemoteObject implements IFernseherRemo
 				String componentId = args[2];
 				String protokoll = "rmi://";
 				String url = protokoll + ip + ":" + port + "/binder";
-				
+
 				try {
-					
-					
+
+
 					System.setProperty("java.rmi.server.hostname","141.45.208.212");
 					FernseherMain fernseherMain = new FernseherMain(new FernseherFrame());
 					System.out.println("Fernseher gestartet");
-					
+
 
 					//den registrierer holen
-					
+
 					IBinder binder = (IBinder) Naming.lookup(url);
 
 					binder.bind("Fernseher_" + componentId, fernseherMain);
 
 					System.out.println("Fernseher-RMI-Binding war erfolgreich");
-					
+
 				} catch (RemoteException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
@@ -67,7 +68,7 @@ public class FernseherMain extends UnicastRemoteObject implements IFernseherRemo
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
-				
+
 			} catch (NumberFormatException nfe) {
 				System.out.println("Kein gueltiger Port");
 			}
@@ -80,20 +81,20 @@ public class FernseherMain extends UnicastRemoteObject implements IFernseherRemo
 	@Override
 	public void turnOn() throws RemoteException {
 		fernseherFrame.turnOn();
-	    this.startMusic();
+		this.startMusic();
 	}
 
 	@Override
 	public void turnOff() throws RemoteException {
 		fernseherFrame.turnOff();
 		this.killMusic();
-		
+
 	}
 
 	@Override
 	public void turnVolumeDownTo(int volume) throws RemoteException {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
@@ -105,42 +106,40 @@ public class FernseherMain extends UnicastRemoteObject implements IFernseherRemo
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-	     
-		
+
+
 	}
 
 	@Override
 	public void startMusic() throws RemoteException {
 		try {
-		File soundFile = new File("C:/Users/Stephanie/Desktop/Sparrow.WAV"); //you could also get the sound file with an URL
-        AudioInputStream audioIn = AudioSystem.getAudioInputStream(soundFile);              
-       // Get a sound clip resource.
-       clip = AudioSystem.getClip();
-       // Open audio clip and load samples from the audio input stream.
-       clip.open(audioIn);
-       clip.start();
-    } catch (UnsupportedAudioFileException e) {
-       e.printStackTrace();
-    } catch (IOException e) {
-       e.printStackTrace();
-    } catch (LineUnavailableException e) {
-       e.printStackTrace();
-    }
+			URL url1= this.getClass().getResource("/images/Sparrow.WAV");
+			AudioInputStream audioIn = AudioSystem.getAudioInputStream(url1);              
+			clip = AudioSystem.getClip();
+			clip.open(audioIn);
+			clip.start();
+		} catch (UnsupportedAudioFileException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		} catch (LineUnavailableException e) {
+			e.printStackTrace();
+		}
 
-		
+
 	}
 
 	@Override
 	public void playTone(int value) throws RemoteException {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 
-	
 
-	
 
-	
-	
+
+
+
+
 }
